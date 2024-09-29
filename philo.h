@@ -29,6 +29,7 @@ typedef struct s_data
     int must_eat ;
     pthread_mutex_t *fork;
     pthread_mutex_t  mutex ;
+    pthread_mutex_t  chek_time ;
 
     t_philo *philo;
 } t_data;
