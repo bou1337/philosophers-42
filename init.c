@@ -12,7 +12,6 @@ void init_philo(t_data *data,int ac ,char **av)
     data->count_meal = 0 ;
     data->arg_6 = 0;
     pthread_mutex_init(&(data->mutex), NULL) ;
-    pthread_mutex_init(&(data->chek_time), NULL) ;
     if(ac == 6)
     {
         data->arg_6 =1;
