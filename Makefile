@@ -1,7 +1,7 @@
 NAME  = philo 
 FLAGS = -Wall -Werror -Wextra 
 CC    = gcc
-SRS   =  utils.c utils1.c thread.c main.c init.c 
+SRS   =  utils.c utils1.c thread.c main.c init.c  
 OBJS  = $(SRS:.c=.o)
 
 all: $(NAME)
