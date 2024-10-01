@@ -30,6 +30,8 @@ typedef struct s_data
     pthread_mutex_t *fork;
     pthread_mutex_t  mutex_printf;
     pthread_mutex_t  mutex_count_meal ;
+    pthread_mutex_t  mutex_nb ;
+    pthread_mutex_t  mutex_id ;
 
     t_philo *philo;
 } t_data;
