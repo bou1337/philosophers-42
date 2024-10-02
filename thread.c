@@ -5,7 +5,6 @@ void *routine(void *arg)
     long time  ;
     t_philo *philo = (t_philo *)arg;
     t_data *data = philo->data; 
-    data->start_time = get_current_time();
 
     if (philo->id % 2 != 0)
     {

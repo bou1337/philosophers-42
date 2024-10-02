@@ -13,7 +13,7 @@ void init_philo(t_data *data,int ac ,char **av)
     data->arg_6 = 0;
     pthread_mutex_init(&(data->mutex_printf), NULL) ;
     pthread_mutex_init(&(data->mutex_count_meal),NULL) ;
-    pthread_mutex_init(&(data->mutex_id), NULL) ;
+    pthread_mutex_init(&(data->mutex_last_eat), NULL) ;
     if(ac == 6)
     {
         data->arg_6 =1;
