@@ -10,7 +10,7 @@ void *routine(void *arg)
     {
         time = get_current_time();
         printf("%ld  %d  is thinking\n",time -data->start_time, philo->id);
-         usleep(600);
+         usleep(1000);
     }
 
     while (1)
@@ -20,7 +20,7 @@ void *routine(void *arg)
       put_str("EROOR:pthread_mutex", 2);
       return NULL;
       }
-      usleep(50);
+      usleep(200);
     }
 
     return NULL;
