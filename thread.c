@@ -6,7 +6,7 @@ void *routine(void *arg)
     t_philo *philo = (t_philo *)arg;
     t_data *data = philo->data; 
 
-    if (philo->id % 2 == 0)
+    if (philo->id % 2 != 0)
     {
         time = get_current_time();
         printf("%ld  %d  is thinking\n",time -data->start_time, philo->id);
@@ -20,38 +20,31 @@ void *routine(void *arg)
       put_str("EROOR:pthread_mutex", 2);
       return NULL;
       }
-      if(data->stop == 0)
-      return NULL ;
-      //usleep(200);
+      usleep(200);
     }
 
     return NULL;
-}int create_thread(t_data *data)
+}
+int create_thread(t_data *data)
 {
-    int i = 0;
-
-    // Create all the threads (philosophers)
-   while (i < data->nb)
+    int i = 0 ;
+    while(i<data->nb)
     {
-        // Create a new thread for each philosopher
-        pthread_create(&(data->philo[i].thread), NULL, &routine, &(data->philo[i]));
+        pthread_create(&(data->philo[i].thread), NULL, &routine,&(data->philo[i]));
         i++;
     }
 
- while(i<data->nb)
+   while(chek_death_full(data))
+   {
+    usleep(500);
+   }
+    int j = 0 ;
+
+    while(j<data->nb)
     {
-        pthread_join(data->philo[i].thread, NULL) ;
-        i++ ;
+        pthread_detach(data->philo[j].thread) ;
+        j++;
     }
-
-    //Check for death/fullness conditions
-   while (chek_death_full(data))
-    {
-        //usleep(500);
-    }
-
-    // Join all the threads (wait for each philosopher's thread to complete)
-
-
-    return 0;
+    usleep(500000);
+    return 0 ;
 }

@@ -9,14 +9,20 @@ long get_current_time()
 
 int printf_status(t_data *data, t_philo *philo)
 {
-  pthread_mutex_lock(&(data->fork[(philo->id-1)% data->nb]));
+     if (philo->id % 2 == 0)
+         pthread_mutex_lock(&(data->fork[philo->id % data->nb]));
+    else
+ pthread_mutex_lock(&(data->fork[(philo->id - 1) % data->nb])) ;
   pthread_mutex_lock(&data->mutex_printf);
   printf("%ld  %d  %s",get_current_time() - data->start_time,philo->id, "has taken the right fork\n" );
   pthread_mutex_unlock(&data->mutex_printf);
-  pthread_mutex_lock(&(data->fork[(philo->id ) % data->nb])) ;
+  if (philo->id % 2 == 0)
+         pthread_mutex_lock(&(data->fork[(philo->id - 1) % data->nb])) ;
+    else 
+         pthread_mutex_lock(&(data->fork[philo->id % data->nb]));
   long time  = get_current_time();
   pthread_mutex_lock(&data->mutex_last_eat) ;
-  philo->last_eat = time;
+    philo->last_eat = time;
   pthread_mutex_unlock(&data->mutex_last_eat);
     pthread_mutex_lock(&data->mutex_printf);
     printf("%ld  %d  %s", time - data->start_time,philo->id, "has taken the left fork\n" );
@@ -27,8 +33,8 @@ int printf_status(t_data *data, t_philo *philo)
     data->count_meal ++;
     pthread_mutex_unlock(&data->mutex_count_meal) ;
     ft_usleep(data->time_eat);
-    pthread_mutex_unlock(&(data->fork[(philo->id ) % data->nb])) ;
-    pthread_mutex_unlock(&(data->fork[(philo->id -1)% data->nb])) ;
+    pthread_mutex_unlock(&(data->fork[(philo->id - 1) % data->nb])) ;
+    pthread_mutex_unlock(&(data->fork[philo->id % data->nb])) ;
     pthread_mutex_lock(&data->mutex_printf);
     printf("%ld  %d  %s",get_current_time() - data->start_time,philo->id, "is sleeping\n" );
     pthread_mutex_unlock(&data->mutex_printf);
@@ -51,10 +57,9 @@ int chek_death_full(t_data *data)
         {    
 
              pthread_mutex_lock(&data->mutex_printf) ;
-            // free(data->philo) ;
-             //free (data->fork) ;
              printf("all philosophers are full\n") ;
-             //data->stop = 0;
+            // free(data->fork);
+             //free(data->philo) ;
             //m pthread_mutex_unlock(&data->mutex_printf) ;
              return 0 ;
         }
@@ -64,8 +69,8 @@ int chek_death_full(t_data *data)
         {
             pthread_mutex_lock(&data->mutex_printf);
             printf("%ld  %d  is die\n",get_current_time() - data->start_time ,data->philo[i].id);
-            //free(data->philo) ;
-            //free (data->fork) ;
+            //free(data->fork);
+            //free(data->philo);
            // pthread_mutex_unlock(&data->mutex_printf);
             return (0);
         }
