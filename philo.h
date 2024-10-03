@@ -31,6 +31,7 @@ typedef struct s_data
     pthread_mutex_t  mutex_printf;
     pthread_mutex_t  mutex_count_meal ;
     pthread_mutex_t  mutex_last_eat ;
+    int stop ;
 
     t_philo *philo;
 } t_data;
@@ -41,8 +42,8 @@ void put_str(char *str, int fd);
 void error_in_arg(int i);
 long ft_atoil(char *str);
 int  chek_max_int(char *av[]) ;
-void init_philo(t_data *data,int ac ,char **av);
-void init_mutex(t_data *data);
+int  init_philo(t_data *data,int ac ,char **av);
+int  init_mutex(t_data *data);
 void *routine(void *arg);
 int  create_thread(t_data *data);
 int printf_status(t_data *data, t_philo *philo) ;
