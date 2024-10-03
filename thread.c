@@ -36,7 +36,8 @@ int create_thread(t_data *data)
 
    while(chek_death_full(data))
    {
-    //usleep(50)
+    //usleep(500);
    }
+    usleep(500);
     return 0 ;
 }
