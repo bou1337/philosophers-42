@@ -27,11 +27,12 @@ typedef struct s_data
     long start_time ;
     int arg_6 ; 
     int must_eat ;
+    int *stop ;
     pthread_mutex_t *fork;
     pthread_mutex_t  mutex_printf;
     pthread_mutex_t  mutex_count_meal ;
     pthread_mutex_t  mutex_last_eat ;
-
+    pthread_mutex_t  mutex_stop;
     t_philo *philo;
 } t_data;
 

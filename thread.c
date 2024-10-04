@@ -15,10 +15,16 @@ void *routine(void *arg)
 
     while (1)
     {
+
       printf_status(data, philo) ;
       
       usleep(500) ;
-      
+       pthread_mutex_lock(&data->mutex_stop);
+      if((data->stop)==0)
+      {
+    pthread_mutex_unlock(&data->mutex_stop);
+      return NULL ;
+      }
     }
 
     return NULL;

@@ -58,6 +58,9 @@ int chek_death_full(t_data *data)
 
              pthread_mutex_lock(&data->mutex_printf) ;
              printf("all philosophers are full\n") ;
+             pthread_mutex_lock(&data->mutex_stop);
+             *(data->stop) = 0 ;
+             pthread_mutex_unlock(&data->mutex_stop);
             // free(data->fork);
              //free(data->philo) ;
             //m pthread_mutex_unlock(&data->mutex_printf) ;
@@ -80,3 +83,5 @@ int chek_death_full(t_data *data)
     }
     return (1) ;
 }
+
+
