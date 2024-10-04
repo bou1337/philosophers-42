@@ -8,7 +8,7 @@ int  main(int ac, char **av)
     init_philo(&data, ac,av);
     init_mutex(&data);
     create_thread(&data) ;
-
-    //return 0 ;
+    free(data.fork) ;
+    free(data.philo);
     return (0) ;
 }

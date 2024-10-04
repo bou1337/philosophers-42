@@ -58,23 +58,22 @@ int chek_death_full(t_data *data)
 
              pthread_mutex_lock(&data->mutex_printf) ;
              printf("all philosophers are full\n") ;
-             pthread_mutex_lock(&data->mutex_stop);
-             *(data->stop) = 0 ;
-             pthread_mutex_unlock(&data->mutex_stop);
-            // free(data->fork);
-             //free(data->philo) ;
-            //m pthread_mutex_unlock(&data->mutex_printf) ;
+             pthread_mutex_lock(&data->mutex_stop) ;
+             data->stop  = 1;
+             pthread_mutex_unlock(&data->mutex_stop) ;
              return 0 ;
         }
         pthread_mutex_unlock(&data->mutex_count_meal) ;
         pthread_mutex_lock(&data->mutex_last_eat);
         if(get_current_time() - data->philo[i].last_eat > data->time_die)
         {
+             pthread_mutex_lock(&data->mutex_stop) ; 
+            data->stop = 1;
+              pthread_mutex_unlock(&data->mutex_stop) ;
             pthread_mutex_lock(&data->mutex_printf);
             printf("%ld  %d  is die\n",get_current_time() - data->start_time ,data->philo[i].id);
-            //free(data->fork);
-            //free(data->philo);
-           // pthread_mutex_unlock(&data->mutex_printf);
+    
+            pthread_mutex_unlock(&data->mutex_printf);
             return (0);
         }
         pthread_mutex_unlock(&data->mutex_last_eat);
@@ -83,5 +82,3 @@ int chek_death_full(t_data *data)
     }
     return (1) ;
 }
-
-

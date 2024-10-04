@@ -12,43 +12,45 @@ void *routine(void *arg)
         printf("%ld  %d  is thinking\n",time -data->start_time, philo->id);
          usleep(1000);
     }
+while(1)
+{
+        pthread_mutex_lock(&data->mutex_stop);
+        if(data->stop == 1)
+        {
+        printf("HOOOOOO\n") ;
+         pthread_mutex_unlock(&data->mutex_stop) ;
 
-    while (1)
-    {
-
-      printf_status(data, philo) ;
-      
-      usleep(500) ;
-       pthread_mutex_lock(&data->mutex_stop);
-      if((data->stop)==0)
-      {
-    pthread_mutex_unlock(&data->mutex_stop);
-      return NULL ;
-      }
-    }
-
+        return NULL ;
+        }
+        pthread_mutex_unlock(&data->mutex_stop) ;
+        printf_status(data, philo) ;
+        pthread_mutex_lock(&data->mutex_stop);
+         pthread_mutex_unlock(&data->mutex_stop) ;
+}
     return NULL;
 }
 int create_thread(t_data *data)
 {
     int i = 0 ;
+        i = 0;
     while(i<data->nb)
     {
         pthread_create(&(data->philo[i].thread), NULL, &routine,&(data->philo[i]));
         i++;
     }
 
-   while(chek_death_full(data))
+   while(chek_death_full(data)) 
    {
-    usleep(500);
+
    }
+
     int j = 0 ;
 
   while(j<data->nb)
     {
-        pthread_detach(data->philo[j].thread) ;
+        pthread_join(data->philo[j].thread, NULL) ;
         j++;
     }
     usleep(500000);
     return 0 ;
-}
+    }
