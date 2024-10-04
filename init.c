@@ -11,9 +11,7 @@ void init_philo(t_data *data,int ac ,char **av)
     data->fork = malloc(sizeof(pthread_mutex_t)*data->nb);
     data->count_meal = 0 ;
     data->arg_6 = 0;
-    pthread_mutex_init(&(data->mutex_printf), NULL) ;
-    pthread_mutex_init(&(data->mutex_count_meal),NULL) ;
-    pthread_mutex_init(&(data->mutex_last_eat), NULL) ;
+   
     if(ac == 6)
     {
         data->arg_6 =1;
@@ -32,6 +30,9 @@ void init_philo(t_data *data,int ac ,char **av)
 void init_mutex(t_data *data)
 {
     int  i = 0; 
+     pthread_mutex_init(&(data->mutex_printf), NULL) ;
+    pthread_mutex_init(&(data->mutex_count_meal),NULL) ;
+    pthread_mutex_init(&(data->mutex_last_eat), NULL) ;
     while(i<data->nb)
     {
         pthread_mutex_init(&(data->fork[i]),NULL) ;

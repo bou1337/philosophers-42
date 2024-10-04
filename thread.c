@@ -15,12 +15,10 @@ void *routine(void *arg)
 
     while (1)
     {
-      if(!printf_status(data, philo))
-      {
-      put_str("EROOR:pthread_mutex", 2);
-      return NULL;
-      }
-      usleep(200);
+      printf_status(data, philo) ;
+      
+      usleep(500) ;
+      
     }
 
     return NULL;
@@ -40,7 +38,7 @@ int create_thread(t_data *data)
    }
     int j = 0 ;
 
-    while(j<data->nb)
+  while(j<data->nb)
     {
         pthread_detach(data->philo[j].thread) ;
         j++;
