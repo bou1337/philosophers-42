@@ -51,6 +51,6 @@ int create_thread(t_data *data)
         pthread_join(data->philo[j].thread, NULL) ;
         j++;
     }
-    usleep(500000);
+    //usleep(500000);
     return 0 ;
     }
