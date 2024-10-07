@@ -2,16 +2,10 @@
 
 void *routine(void *arg)
 {
-    long time  ;
+  //  long time  ;
     t_philo *philo = (t_philo *)arg;
     t_data *data = philo->data; 
-
-    if (philo->id % 2 == 0)
-    {
-        time = get_current_time();
-        printf("%ld  %d  is thinking\n",time -data->start_time, philo->id);
-         usleep(500);
-    }
+    
 while(1)
 {
         pthread_mutex_lock(&data->mutex_stop);

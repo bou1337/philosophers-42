@@ -6,50 +6,78 @@ long get_current_time()
     gettimeofday(&tv, NULL);
     return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
 }
-
 int printf_status(t_data *data, t_philo *philo)
 {
+    if (philo->id % 2 == 0) {
+        // Even philosophers: Pick up the left fork first, then the right
+        pthread_mutex_lock(&(data->fork[philo->id % data->nb])); // Left fork
+        pthread_mutex_lock(&data->mutex_printf);
+        if (!data->stop)
+            printf("%ld %d %s", get_current_time() - data->start_time, philo->id, "has taken the left fork\n");
+        pthread_mutex_unlock(&data->mutex_printf);
+        pthread_mutex_lock(&(data->fork[(philo->id - 1) % data->nb])); // Right fork
+        pthread_mutex_lock(&data->mutex_printf);
+        if (!data->stop)
+            printf("%ld %d %s", get_current_time() - data->start_time, philo->id, "has taken the right fork\n");
+        pthread_mutex_unlock(&data->mutex_printf);
+     }
+    else {
 
- pthread_mutex_lock(&(data->fork[(philo->id - 1) % data->nb])) ;
-  pthread_mutex_lock(&data->mutex_printf);
-   if(!data->stop)
-  printf("%ld %d %s",get_current_time() - data->start_time,philo->id, "has taken the right fork\n" );
-  if (data->nb==1) 
-  {
-    pthread_mutex_unlock(&data->mutex_printf);
-    pthread_mutex_unlock(&(data->fork[(philo->id -1)% data->nb])) ;
-    return 0 ;
-  }
-  pthread_mutex_unlock(&data->mutex_printf);
-         pthread_mutex_lock(&(data->fork[(philo->id) % data->nb])) ;
-  long time  = get_current_time();
-  pthread_mutex_lock(&data->mutex_last_eat) ;
+     usleep(500); 
+        // Odd philosophers: Pick up the right fork first, then the left (current behavior)
+        pthread_mutex_lock(&(data->fork[(philo->id - 1) % data->nb])); // Right fork
+        pthread_mutex_lock(&data->mutex_printf);
+        if (!data->stop)
+            printf("%ld %d %s", get_current_time() - data->start_time, philo->id, "has taken the right fork\n");
+        pthread_mutex_unlock(&data->mutex_printf);
+    if(data->nb==1)
+    {
+      //pthread_mutex_lock(&(data->fork[(philo->id - 1) % data->nb]))
+      return 0;
+    }
+        pthread_mutex_lock(&(data->fork[philo->id % data->nb])); // Left fork
+        pthread_mutex_lock(&data->mutex_printf);
+        if (!data->stop)
+            printf("%ld %d %s", get_current_time() - data->start_time, philo->id, "has taken the left fork\n");
+        pthread_mutex_unlock(&data->mutex_printf);
+    }
+    long time = get_current_time();
+    pthread_mutex_lock(&data->mutex_last_eat);
     philo->last_eat = time;
-  pthread_mutex_unlock(&data->mutex_last_eat);
+    pthread_mutex_unlock(&data->mutex_last_eat);
+
     pthread_mutex_lock(&data->mutex_printf);
-     if(!data->stop)
-    printf("%ld %d %s", time - data->start_time,philo->id, "has taken the left fork\n" );
-     if(!data->stop)
-    printf("%ld %d %s",time - data->start_time,philo->id, "is eating\n" );
+    if (!data->stop)
+        printf("%ld %d %s", time - data->start_time, philo->id, "is eating\n");
     pthread_mutex_unlock(&data->mutex_printf);
-    pthread_mutex_lock(&data->mutex_count_meal) ;
-    if(data->arg_6)
-    data->count_meal ++;
-    pthread_mutex_unlock(&data->mutex_count_meal) ;
+
+    pthread_mutex_lock(&data->mutex_count_meal);
+    if (data->arg_6)
+        data->count_meal++;
+    pthread_mutex_unlock(&data->mutex_count_meal);
+
     ft_usleep(data->time_eat);
-    pthread_mutex_unlock(&(data->fork[(philo->id ) % data->nb])) ;
-    pthread_mutex_unlock(&(data->fork[(philo->id -1)% data->nb])) ;
+   //usleep(data->time_eat*1000) ;
+
+    // Release both forks
+    pthread_mutex_unlock(&(data->fork[philo->id % data->nb]));  // Left fork
+    pthread_mutex_unlock(&(data->fork[(philo->id - 1) % data->nb])); // Right fork
+
     pthread_mutex_lock(&data->mutex_printf);
-     if(!data->stop)
-    printf("%ld %d %s",get_current_time() - data->start_time,philo->id, "is sleeping\n" );
+    if (!data->stop)
+        printf("%ld %d %s", get_current_time() - data->start_time, philo->id, "is sleeping\n");
     pthread_mutex_unlock(&data->mutex_printf);
+
     ft_usleep(data->time_sleep);
+
     pthread_mutex_lock(&data->mutex_printf);
-     if(!data->stop)
-    printf("%ld %d %s",get_current_time()- data->start_time,philo->id, "is thinking\n" );
+    if (!data->stop)
+        printf("%ld %d %s", get_current_time() - data->start_time, philo->id, "is thinking\n");
     pthread_mutex_unlock(&data->mutex_printf);
+
     return 1;
 }
+
 
 int chek_death_full(t_data *data)
 {
@@ -95,25 +123,3 @@ int chek_death_full(t_data *data)
 }
 
 
-/*
-int mutex_stop(t_data *data )
-{
-  int stop ;
-
-  pthrad_mutex_lock(data->mutex_stop) ;
-  stop  = data->stop ;
-  pthread_mutex_unlock(data->mutex_stop) ;
-  return stop ;
-
-}
-
-void  print_message(t_data *data,char *str, long time)
-{
-
-  if(!mutex_stop)
-  {
-
-  }
-}
-
-*/

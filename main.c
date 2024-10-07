@@ -2,6 +2,7 @@
 
 int  main(int ac, char **av)
 {
+
     t_data data ;
     if(!check_arg(ac, av))
     return (0);
