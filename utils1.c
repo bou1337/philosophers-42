@@ -9,13 +9,13 @@ long get_current_time()
 int printf_status(t_data *data, t_philo *philo)
 {
     if (philo->id % 2 == 0) {
-        // Even philosophers: Pick up the left fork first, then the right
-        pthread_mutex_lock(&(data->fork[philo->id % data->nb])); // Left fork
+    
+        pthread_mutex_lock(&(data->fork[philo->id % data->nb])); 
         pthread_mutex_lock(&data->mutex_printf);
         if (!data->stop)
             printf("%ld %d %s", get_current_time() - data->start_time, philo->id, "has taken the left fork\n");
         pthread_mutex_unlock(&data->mutex_printf);
-        pthread_mutex_lock(&(data->fork[(philo->id - 1) % data->nb])); // Right fork
+        pthread_mutex_lock(&(data->fork[(philo->id - 1) % data->nb]));
         pthread_mutex_lock(&data->mutex_printf);
         if (!data->stop)
             printf("%ld %d %s", get_current_time() - data->start_time, philo->id, "has taken the right fork\n");
@@ -24,18 +24,17 @@ int printf_status(t_data *data, t_philo *philo)
     else {
 
      usleep(500); 
-        // Odd philosophers: Pick up the right fork first, then the left (current behavior)
-        pthread_mutex_lock(&(data->fork[(philo->id - 1) % data->nb])); // Right fork
+    
+        pthread_mutex_lock(&(data->fork[(philo->id - 1) % data->nb]));
         pthread_mutex_lock(&data->mutex_printf);
         if (!data->stop)
             printf("%ld %d %s", get_current_time() - data->start_time, philo->id, "has taken the right fork\n");
         pthread_mutex_unlock(&data->mutex_printf);
     if(data->nb==1)
     {
-      //pthread_mutex_lock(&(data->fork[(philo->id - 1) % data->nb]))
       return 0;
     }
-        pthread_mutex_lock(&(data->fork[philo->id % data->nb])); // Left fork
+        pthread_mutex_lock(&(data->fork[philo->id % data->nb])); 
         pthread_mutex_lock(&data->mutex_printf);
         if (!data->stop)
             printf("%ld %d %s", get_current_time() - data->start_time, philo->id, "has taken the left fork\n");
@@ -50,18 +49,13 @@ int printf_status(t_data *data, t_philo *philo)
     if (!data->stop)
         printf("%ld %d %s", time - data->start_time, philo->id, "is eating\n");
     pthread_mutex_unlock(&data->mutex_printf);
-
-    pthread_mutex_lock(&data->mutex_count_meal);
+    ft_usleep(data->time_eat);
+     pthread_mutex_lock(&data->mutex_count_meal);
     if (data->arg_6)
         data->count_meal++;
     pthread_mutex_unlock(&data->mutex_count_meal);
-
-    ft_usleep(data->time_eat);
-   //usleep(data->time_eat*1000) ;
-
-    // Release both forks
-    pthread_mutex_unlock(&(data->fork[philo->id % data->nb]));  // Left fork
-    pthread_mutex_unlock(&(data->fork[(philo->id - 1) % data->nb])); // Right fork
+    pthread_mutex_unlock(&(data->fork[philo->id % data->nb]));  
+    pthread_mutex_unlock(&(data->fork[(philo->id - 1) % data->nb])); 
 
     pthread_mutex_lock(&data->mutex_printf);
     if (!data->stop)
@@ -93,8 +87,8 @@ int chek_death_full(t_data *data)
               pthread_mutex_lock(&data->mutex_stop) ;
              data->stop  = 1;
              pthread_mutex_unlock(&data->mutex_stop) ;
-            
-             printf("all philosophers are full\n") ;
+             ft_usleep(data->must_eat) ;
+             printf("All the philosophers are full\n") ;
             
              pthread_mutex_unlock(&data->mutex_printf);
               pthread_mutex_unlock(&data->mutex_count_meal) ;
@@ -110,7 +104,6 @@ int chek_death_full(t_data *data)
               pthread_mutex_unlock(&data->mutex_stop) ;
            
             printf("%ld  %d  is die\n",get_current_time() - data->start_time ,data->philo[i].id);
-            //usleep(1000);
             pthread_mutex_unlock(&data->mutex_printf);
              pthread_mutex_unlock(&data->mutex_last_eat);
             return (0);
