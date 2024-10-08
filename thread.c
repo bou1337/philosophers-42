@@ -8,17 +8,12 @@ void *routine(void *arg)
     
 while(1)
 {
-        pthread_mutex_lock(&data->mutex_stop);
-        if(data->stop == 1)
-        {
-         pthread_mutex_unlock(&data->mutex_stop) ;
-
-        return NULL ;
-        }
-        pthread_mutex_unlock(&data->mutex_stop) ;
+       if(check_stop(data)) 
+       return NULL  ;
       
         if(!printf_status(data, philo))
         return NULL ;
+        usleep(500) ;
 }
     return NULL;
 }

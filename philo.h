@@ -52,4 +52,8 @@ int check_death( t_data *data);
 void ft_usleep(int ms) ;
 void print_status(long time, char *message, long id) ;
 int chek_death_full(t_data *data) ; 
+int  check_stop(t_data *data ) ; 
+void mutex_printf(t_data *data,t_philo *philo,  char *str) ;
+void lock_odd(t_data *data ,t_philo *philo) ;
+int lock_even(t_data *data , t_philo *philo) ;
 #endif
