@@ -1,47 +1,65 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   thread.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: iait-bou <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/08 14:10:09 by iait-bou          #+#    #+#             */
+/*   Updated: 2024/10/08 14:37:41 by iait-bou         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
-void *routine(void *arg)
+void	*routine(void *arg)
 {
-  //  long time  ;
-    t_philo *philo = (t_philo *)arg;
-    t_data *data = philo->data; 
-    
-while(1)
-{
-       if(check_stop(data)) 
-       return NULL  ;
-      
-        if(!printf_status(data, philo))
-        return NULL ;
-        usleep(500) ;
+	t_philo	*philo;
+	t_data	*data;
+
+	philo = (t_philo *)arg;
+	data = philo->data;
+	while (1)
+	{
+		if (check_stop(data))
+			return (NULL);
+		if (!printf_status(data, philo))
+			return (NULL);
+		//usleep(50);
+	}
+	return (NULL);
 }
-    return NULL;
-}
-int create_thread(t_data *data)
+
+int	create_thread(t_data *data)
 {
-    int i = 0 ;
-        i = 0;
-    while(i<data->nb)
-    {
-        pthread_create(&(data->philo[i].thread), NULL, &routine,&(data->philo[i]));
-        i++;
-    }
+	int	i;
+	int	j;
 
-   while(chek_death_full(data)) 
-   {
+	i = 0;
+	i = 0;
+	while (i < data->nb)
+	{
+		pthread_create(&(data->philo[i].thread), NULL, &routine,
+			&(data->philo[i]));
+		i++;
+	}
+	while (chek_death_full(data))
+	{
+	}
+	j = 0;
+	while (j < data->nb)
+	{
+		pthread_join(data->philo[j].thread, NULL);
+		j++;
+	}
+	return (0);
+}
 
-   }
+void	ft_usleep(int ms)
+{
+	long	start_time;
 
-    int j = 0 ;
-
-  while(j<data->nb)
-    {
-        pthread_join(data->philo[j].thread, NULL) ;
-        j++;
-    }
-    return 0 ;
-    }
-
-
-
-
+	start_time = get_current_time();
+	while ((get_current_time() - start_time) < ms)
+		;
+}

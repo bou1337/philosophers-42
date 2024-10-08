@@ -1,48 +1,56 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lock.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: iait-bou <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/08 14:06:58 by iait-bou          #+#    #+#             */
+/*   Updated: 2024/10/08 14:07:01 by iait-bou         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "philo.h"
 
-int  check_stop(t_data *data )
+int	check_stop(t_data *data)
 {
+	int	stop;
 
-    int stop  ;
-
-    pthread_mutex_lock(&data->mutex_stop) ;
-    stop  = data->stop ;
-    pthread_mutex_unlock(&data->mutex_stop) ;
-    return stop ;
+	pthread_mutex_lock(&data->mutex_stop);
+	stop = data->stop;
+	pthread_mutex_unlock(&data->mutex_stop);
+	return (stop);
 }
 
-void mutex_printf(t_data *data,t_philo *philo,  char *str)
+void	mutex_printf(t_data *data, t_philo *philo, char *str)
 {
-    pthread_mutex_lock(&data->mutex_printf) ;
-     printf("%ld %d %s\n", get_current_time() - data->start_time, philo->id,str);
-    pthread_mutex_unlock(&data->mutex_printf) ;
+	pthread_mutex_lock(&data->mutex_printf);
+	printf("%ld %d %s\n", get_current_time() - data->start_time, philo->id,
+		str);
+	pthread_mutex_unlock(&data->mutex_printf);
 }
 
-void lock_odd(t_data *data ,t_philo *philo)
+void	lock_odd(t_data *data, t_philo *philo)
 {
-    pthread_mutex_lock(&(data->fork[philo->id % data->nb])); 
-        if (check_stop(data))
-        mutex_printf(data,philo,  "has taken the left fork");
-        pthread_mutex_lock(&(data->fork[(philo->id - 1) % data->nb]));
-        if (!check_stop(data))
-        mutex_printf(data,philo,  "has taken the right fork");
+	pthread_mutex_lock(&(data->fork[philo->id % data->nb]));
+	if (check_stop(data))
+		mutex_printf(data, philo, "has taken the left fork");
+	pthread_mutex_lock(&(data->fork[(philo->id - 1) % data->nb]));
+	if (!check_stop(data))
+		mutex_printf(data, philo, "has taken the right fork");
 }
 
-int lock_even(t_data *data , t_philo *philo)
+int	lock_even(t_data *data, t_philo *philo)
 {
-    
-     pthread_mutex_lock(&(data->fork[(philo->id - 1) % data->nb]));
-        if (!check_stop(data))
-        mutex_printf(data,philo,  "has taken the right fork") ;
-    if(data->nb==1)
-    {
-      return 0;
-    }
-        pthread_mutex_lock(&(data->fork[philo->id % data->nb])); 
-        if (!check_stop(data))
-        mutex_printf(data,philo,  "has taken the left fork") ;
-    return 1 ;
-
+	pthread_mutex_lock(&(data->fork[(philo->id - 1) % data->nb]));
+	if (!check_stop(data))
+		mutex_printf(data, philo, "has taken the right fork");
+	if (data->nb == 1)
+	{
+		return (0);
+	}
+	pthread_mutex_lock(&(data->fork[philo->id % data->nb]));
+	if (!check_stop(data))
+		mutex_printf(data, philo, "has taken the left fork");
+	return (1);
 }
-
