@@ -23,9 +23,9 @@ void	*routine(void *arg)
 	{
 		if (check_stop(data))
 			return (NULL);
-		if (!printf_status(data, philo))
+		if (printf_status(data, philo) != 1)
 			return (NULL);
-		//usleep(50);
+		usleep(500);
 	}
 	return (NULL);
 }
@@ -36,7 +36,7 @@ int	create_thread(t_data *data)
 	int	j;
 
 	i = 0;
-	i = 0;
+	j = 0;
 	while (i < data->nb)
 	{
 		pthread_create(&(data->philo[i].thread), NULL, &routine,
@@ -45,8 +45,8 @@ int	create_thread(t_data *data)
 	}
 	while (chek_death_full(data))
 	{
+		usleep(10);
 	}
-	j = 0;
 	while (j < data->nb)
 	{
 		pthread_join(data->philo[j].thread, NULL);

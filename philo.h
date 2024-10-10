@@ -66,8 +66,12 @@ void				print_status(long time, char *message, long id);
 int					chek_death_full(t_data *data);
 int					check_stop(t_data *data);
 void				mutex_printf(t_data *data, t_philo *philo, char *str);
-void				lock_odd(t_data *data, t_philo *philo);
+// void mutex_printf(t_data **data, t_philo **philo, char *str) ;
+int					lock_odd(t_data *data, t_philo *philo);
 int					lock_even(t_data *data, t_philo *philo);
 int					check_full(t_data *data);
 int					check_death(t_data *data, int i);
+void				unlock(t_data *data, t_philo *philo);
+void				unlock_lock(t_data *data, t_philo *philo);
+
 #endif
