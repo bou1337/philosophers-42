@@ -1,5 +1,5 @@
 NAME  = philo 
-FLAGS = -Wall -Werror -Wextra -fsanitize=thread -g 
+FLAGS = -Wall -Werror -Wextra  -pthread #-fsanitize=thread -g 
 CC    = cc
 SRS   =  utils.c utils1.c thread.c main.c init.c  lock.c unlock.c 
 OBJS  = $(SRS:.c=.o)
