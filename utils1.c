@@ -26,9 +26,16 @@ int	printf_status(t_data *data, t_philo *philo)
 		return (printf("%ld %d %s", get_current_time() - data->start_time,
 				philo->id, "has taken the right fork\n"));
 	if (philo->id % 2 == 0)
+	{
 		lock_odd(data, philo);
+
+	}
+	
 	else
+	{
+		//usleep(5000) ;
 		lock_even(data, philo);
+	}
 	pthread_mutex_lock(&data->mutex_last_eat);
 	philo->last_eat = get_current_time();
 	pthread_mutex_unlock(&data->mutex_last_eat);

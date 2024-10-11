@@ -19,13 +19,19 @@ void	*routine(void *arg)
 
 	philo = (t_philo *)arg;
 	data = philo->data;
+	pthread_mutex_lock(&data->mutex_start) ;
+	pthread_mutex_unlock(&data->mutex_start) ;
+	if (philo->id % 2 != 0)
+	{
+		usleep(50000) ;
+	}
 	while (1)
 	{
 		if (check_stop(data))
 			return (NULL);
 		if (printf_status(data, philo) != 1)
 			return (NULL);
-		usleep(500);
+
 	}
 	return (NULL);
 }
@@ -37,15 +43,25 @@ int	create_thread(t_data *data)
 
 	i = 0;
 	j = 0;
+	pthread_mutex_lock(&data->mutex_start) ;
 	while (i < data->nb)
 	{
 		pthread_create(&(data->philo[i].thread), NULL, &routine,
 			&(data->philo[i]));
 		i++;
 	}
+    pthread_mutex_unlock(&data->mutex_start) ;
+	i = 0 ;
+    while (i < data->nb)
+	{
+		data->philo[i].last_eat = get_current_time() ;
+		i++ ;
+
+	}
+	data->start_time = get_current_time();
 	while (chek_death_full(data))
 	{
-		usleep(10);
+		usleep(100);
 	}
 	while (j < data->nb)
 	{
@@ -61,5 +77,7 @@ void	ft_usleep(int ms)
 
 	start_time = get_current_time();
 	while ((get_current_time() - start_time) < ms)
-		;
+	{
+		usleep(100) ;
+	}
 }
