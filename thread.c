@@ -21,10 +21,8 @@ void	*routine(void *arg)
 	data = philo->data;
 	pthread_mutex_lock(&data->mutex_start) ;
 	pthread_mutex_unlock(&data->mutex_start) ;
-	if (philo->id % 2 != 0)
-	{
-		usleep(50000) ;
-	}
+	
+	usleep(5000) ;
 	while (1)
 	{
 		if (check_stop(data))

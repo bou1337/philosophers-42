@@ -33,7 +33,7 @@ int	printf_status(t_data *data, t_philo *philo)
 	
 	else
 	{
-		//usleep(5000) ;
+		usleep(500) ;
 		lock_even(data, philo);
 	}
 	pthread_mutex_lock(&data->mutex_last_eat);
