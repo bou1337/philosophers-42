@@ -30,7 +30,6 @@ int	printf_status(t_data *data, t_philo *philo)
 		lock_odd(data, philo);
 
 	}
-	
 	else
 	{
 		usleep(500) ;
@@ -86,7 +85,7 @@ int	check_full(t_data *data)
 			pthread_mutex_lock(&data->mutex_stop);
 			data->stop = 1;
 			pthread_mutex_unlock(&data->mutex_stop);
-			printf("All the philosophers are full\n");
+			ft_usleep(data->time_eat) ;
 			pthread_mutex_unlock(&data->mutex_printf);
 			pthread_mutex_unlock(&data->mutex_count_meal);
 			return (0);
