@@ -40,7 +40,7 @@ int	lock_odd(t_data *data, t_philo *philo)
 	if (!data->stop)
 	{
 		printf("%ld %d %s", get_current_time() - data->start_time, philo->id,
-			"has taken the left fork\n");
+			"has taken a fork\n");
 	}
 	else
 	{
@@ -52,7 +52,7 @@ int	lock_odd(t_data *data, t_philo *philo)
 	pthread_mutex_lock(&data->mutex_printf);
 	if (!data->stop)
 		printf("%ld %d %s", get_current_time() - data->start_time, philo->id,
-			"has taken the right fork\n");
+			"has taken a fork\n");
 	else
 	{
 		pthread_mutex_unlock(&data->mutex_printf);
@@ -68,7 +68,7 @@ int	lock_even(t_data *data, t_philo *philo)
 	pthread_mutex_lock(&data->mutex_printf);
 	if (!data->stop)
 		printf("%ld %d %s", get_current_time() - data->start_time, philo->id,
-			"has taken the right fork\n");
+			"has taken a fork\n");
 	else
 	{
 		unlock_lock(data, philo);
@@ -79,7 +79,7 @@ int	lock_even(t_data *data, t_philo *philo)
 	pthread_mutex_lock(&data->mutex_printf);
 	if (!data->stop)
 		printf("%ld %d %s", get_current_time() - data->start_time, philo->id,
-			"has taken the left fork\n");
+			"has taken a fork\n");
 	else
 	{
 		pthread_mutex_unlock(&data->mutex_printf);

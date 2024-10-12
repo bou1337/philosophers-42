@@ -42,12 +42,19 @@ int	check_arg(int ac, char **av)
 int	main(int ac, char **av)
 {
 	t_data	data;
+	int		j;
 
+	j = 0;
 	if (!check_arg(ac, av))
 		return (0);
 	init_philo(&data, ac, av);
 	init_mutex(&data);
 	create_thread(&data);
+	while (j < data.nb)
+	{
+		pthread_join(data.philo[j].thread, NULL);
+		j++;
+	}
 	free(data.fork);
 	free(data.philo);
 	return (0);

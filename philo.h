@@ -45,7 +45,7 @@ typedef struct s_data
 	pthread_mutex_t	mutex_count_meal;
 	pthread_mutex_t	mutex_last_eat;
 	pthread_mutex_t	mutex_stop;
-	pthread_mutex_t mutex_start ;
+	pthread_mutex_t	mutex_start;
 	t_philo			*philo;
 
 }					t_data;

@@ -6,7 +6,7 @@
 /*   By: iait-bou <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 14:16:29 by iait-bou          #+#    #+#             */
-/*   Updated: 2024/10/08 14:16:32 by iait-bou         ###   ########.fr       */
+/*   Updated: 2024/10/12 02:08:05 by iait-bou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,17 +22,11 @@ long	get_current_time(void)
 
 int	printf_status(t_data *data, t_philo *philo)
 {
-	if (data->nb == 1)
-		return (printf("%ld %d %s", get_current_time() - data->start_time,
-				philo->id, "has taken the right fork\n"));
 	if (philo->id % 2 == 0)
-	{
 		lock_odd(data, philo);
-
-	}
 	else
 	{
-		usleep(500) ;
+		usleep(500);
 		lock_even(data, philo);
 	}
 	pthread_mutex_lock(&data->mutex_last_eat);
@@ -85,7 +79,7 @@ int	check_full(t_data *data)
 			pthread_mutex_lock(&data->mutex_stop);
 			data->stop = 1;
 			pthread_mutex_unlock(&data->mutex_stop);
-			ft_usleep(data->time_eat) ;
+			ft_usleep(data->time_eat);
 			pthread_mutex_unlock(&data->mutex_printf);
 			pthread_mutex_unlock(&data->mutex_count_meal);
 			return (0);
@@ -104,7 +98,7 @@ int	check_death(t_data *data, int i)
 		pthread_mutex_lock(&data->mutex_stop);
 		data->stop = 1;
 		pthread_mutex_unlock(&data->mutex_stop);
-		printf("%ld  %d  is die\n", get_current_time() - data->start_time,
+		printf("%ld %d died\n", get_current_time() - data->start_time,
 			data->philo[i].id);
 		pthread_mutex_unlock(&data->mutex_printf);
 		pthread_mutex_unlock(&data->mutex_last_eat);
