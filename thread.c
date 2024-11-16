@@ -21,7 +21,6 @@ void	*routine(void *arg)
 	data = philo->data;
 	pthread_mutex_lock(&data->mutex_start);
 	pthread_mutex_unlock(&data->mutex_start);
-	usleep(5000);
 	if (data->nb == 1)
 	{
 		pthread_mutex_lock(&(data->fork[(philo->id - 1) % data->nb]));
@@ -51,13 +50,12 @@ int	create_thread(t_data *data)
 			&(data->philo[i]));
 		i++;
 	}
-	pthread_mutex_unlock(&data->mutex_start);
 	while (i < data->nb)
 	{
 		data->philo[i].last_eat = get_current_time();
 		i++;
 	}
-	data->start_time = get_current_time();
+	pthread_mutex_unlock(&data->mutex_start);
 	while (chek_death_full(data))
 	{
 		usleep(100);

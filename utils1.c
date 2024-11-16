@@ -73,7 +73,7 @@ int	check_full(t_data *data)
 	pthread_mutex_lock(&data->mutex_count_meal);
 	if (data->arg_6)
 	{
-		if (data->count_meal == (size_t)data->must_eat * (size_t)data->nb)
+		if (data->count_meal >= (size_t)data->must_eat * (size_t)data->nb)
 		{
 			pthread_mutex_lock(&data->mutex_printf);
 			pthread_mutex_lock(&data->mutex_stop);

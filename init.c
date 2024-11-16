@@ -31,6 +31,7 @@ void	init_philo(t_data *data, int ac, char **av)
 		data->must_eat = ft_atoil(av[5]);
 	}
 	i = 0;
+	data->start_time = get_current_time();
 	while (i < data->nb)
 	{
 		data->philo[i].id = i + 1;

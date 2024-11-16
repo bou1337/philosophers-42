@@ -48,6 +48,10 @@ int	main(int ac, char **av)
 	if (!check_arg(ac, av))
 		return (0);
 	init_philo(&data, ac, av);
+	if (data.time_sleep > data.time_die)
+		data.time_sleep = data.time_die;
+	if (data.time_eat > data.time_die)
+		data.time_eat = data.time_die;
 	init_mutex(&data);
 	create_thread(&data);
 	while (j < data.nb)
